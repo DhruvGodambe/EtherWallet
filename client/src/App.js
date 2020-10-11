@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import Web3 from 'web3';
-
 import "./App.css";
+
+var Tx = require('ethereumjs-tx').Transaction
 
 class App extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
 
   componentDidMount = async () => {
+    console.log(Tx)
     try {
       // Get network provider and web3 instance.
       const web3 = new Web3('http://127.0.0.1:7545');
@@ -58,6 +60,31 @@ class App extends Component {
     this.setState({...this.state, account: newAddress})
   }
 
+  transact = async () => {
+    this.state.web3.eth.getTransactionCount('0x38C041B9560d9B7dC299583C25efBBE317e1475a')
+    .then((count) => {
+      const txObject = {
+        nonce: this.state.web3.utils.toHex(count),
+        to: '0x24a5D829Eb8fdfef3CEe953cA9310805571a7408',
+        value: this.state.web3.utils.toHex(this.state.web3.utils.toWei(this.state.transact.value.toString(), 'ether')),
+        gasLimit: this.state.web3.utils.toHex(21000),
+        gasPrice: this.state.web3.utils.toHex(this.state.web3.utils.toWei('10', 'gwei')),
+      }
+      
+      const tx = new Tx(txObject)
+      var privateKey = Buffer.from('0635bdeac2b22da46e9887f60b0332b447cd0982abe5dc3796b9765785ad1ef6')
+      console.log(privateKey)
+      tx.sign(privateKey)
+
+      const serializedTransaction = tx.serialize()
+      const raw = '0x' + serializedTransaction.toString('hex')
+
+      this.state.web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+        console.log('txHash: ', txHash)
+      })
+    })
+  }
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -84,17 +111,35 @@ class App extends Component {
           <h2>Send Ether</h2>
           <hr/>
           <div style={{margin: '10px 0'}}>
-            <input placeholder='From' style={{fontSize: '20px', padding: '5px', minWidth: '435px', maxWidth: '600px'}} />
+            <input
+              placeholder='From'
+              style={{fontSize: '20px', padding: '5px', minWidth: '435px', maxWidth: '600px'}}
+              onChange={(e) => {
+                this.setState({...this.state, transact: {...this.state.transact, from: e.target.value}})
+              }}
+              />
           </div>
           <div style={{margin: '10px 0'}}>
-            <input placeholder='To' style={{fontSize: '20px', padding: '5px', minWidth: '435px', maxWidth: '600px'}} />
+            <input
+              placeholder='To'
+              style={{fontSize: '20px', padding: '5px', minWidth: '435px', maxWidth: '600px'}}
+              onChange={(e) => {
+                this.setState({...this.state, transact: {...this.state.transact, to: e.target.value}})
+              }}
+              />
           </div>
           <div style={{margin: '10px 0'}}>
-            <input placeholder='Amount of ether' style={{fontSize: '20px', padding: '5px', minWidth: '435px', maxWidth: '600px'}} />
+            <input
+              placeholder='Amount of ether'
+              style={{fontSize: '20px', padding: '5px', minWidth: '435px', maxWidth: '600px'}}
+              onChange={(e) => {
+                this.setState({...this.state, transact: {...this.state.transact, value: e.target.value}})
+              }}
+              />
           </div>
-          <button onClick={this.createWallet} className='container-button'>send</button>
+          <button onClick={this.transact} className='container-button'>send</button>
           <p style={{color: '#555', fontSize: '17px'}}>send ether to known addresses only!</p>
-
+          {this.state.transaction ? <h1>transaction Successful</h1> : null}
         </div>
       </div>
     );
