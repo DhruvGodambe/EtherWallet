@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/EtherWallet/static/css/main.3996b5e3.chunk.css",
+    "main.js": "/EtherWallet/static/js/main.7cadb704.chunk.js",
+    "main.js.map": "/EtherWallet/static/js/main.7cadb704.chunk.js.map",
+    "runtime-main.js": "/EtherWallet/static/js/runtime-main.45b62b64.js",
+    "runtime-main.js.map": "/EtherWallet/static/js/runtime-main.45b62b64.js.map",
+    "static/js/2.1e2b8cb9.chunk.js": "/EtherWallet/static/js/2.1e2b8cb9.chunk.js",
+    "static/js/2.1e2b8cb9.chunk.js.map": "/EtherWallet/static/js/2.1e2b8cb9.chunk.js.map",
+    "index.html": "/EtherWallet/index.html",
+    "precache-manifest.9a81edd2e0dff20463232197ca408373.js": "/EtherWallet/precache-manifest.9a81edd2e0dff20463232197ca408373.js",
+    "service-worker.js": "/EtherWallet/service-worker.js",
+    "static/css/main.3996b5e3.chunk.css.map": "/EtherWallet/static/css/main.3996b5e3.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.45b62b64.js",
+    "static/js/2.1e2b8cb9.chunk.js",
+    "static/css/main.3996b5e3.chunk.css",
+    "static/js/main.7cadb704.chunk.js"
+  ]
+}
